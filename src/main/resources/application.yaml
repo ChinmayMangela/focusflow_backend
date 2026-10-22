@@ -1,11 +1,12 @@
 spring:
+
   application:
     name: focusflow
 
   security:
     user:
-      name: user
-      password: ${APP_SECURITY_PASSWORD}
+      name: cain
+      password: cain@1234
 
 
   datasource:
@@ -18,3 +19,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+server:
+  port: 8000
+
+
+logging:
+  level:
+    org.springframework.security: TRACE
