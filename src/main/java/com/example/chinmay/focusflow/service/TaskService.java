@@ -10,6 +10,8 @@ import com.example.chinmay.focusflow.repository.TaskRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -33,5 +35,9 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
         return TaskMapper.toResponse(task);
+    }
+
+    public List<TaskResponse> fetchAllTasks() {
+        return taskRepository.findAll().stream().map(TaskMapper::toResponse).toList();
     }
 }

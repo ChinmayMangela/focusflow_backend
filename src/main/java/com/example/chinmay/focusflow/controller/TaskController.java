@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 
@@ -40,5 +42,10 @@ public class TaskController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(taskService.fetchTaskById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> fetchAllTasks() {
+        return ResponseEntity.ok(taskService.fetchAllTasks());
     }
 }
