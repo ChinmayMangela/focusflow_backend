@@ -6,6 +6,8 @@ import com.example.chinmay.focusflow.service.TaskService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +30,15 @@ public class TaskController {
     public ResponseEntity<TaskResponse> createTask(
             @Valid @RequestBody CreateTaskRequest createTaskRequest
     ) {
-        System.out.println("Creating a task");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(taskService.createTask(createTaskRequest));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponse> fetchTask(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(taskService.fetchTaskById(id));
     }
 }
