@@ -1,3 +1,20 @@
 spring:
   application:
     name: focusflow
+
+  security:
+    user:
+      name: user
+      password: ${APP_SECURITY_PASSWORD}
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/focusflow_db
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
