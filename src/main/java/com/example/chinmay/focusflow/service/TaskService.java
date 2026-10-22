@@ -11,6 +11,7 @@ import com.example.chinmay.focusflow.mapper.TaskMapper;
 import com.example.chinmay.focusflow.repository.TaskRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -67,20 +68,28 @@ public class TaskService {
         TaskEntity existingTask = taskRepository.findById(oldTaskId)
                 .orElseThrow(() -> new TaskNotFoundException(oldTaskId));
 
-        if(newTask.title() != null) {
+        if (newTask.title() != null) {
             existingTask.setTitle(newTask.title());
         }
-        if(newTask.description() != null) {
+        if (newTask.description() != null) {
             existingTask.setDescription(newTask.description());
         }
-        if(newTask.priority() != null) {
+        if (newTask.priority() != null) {
             existingTask.setPriority(newTask.priority());
         }
-        if(newTask.completed() != null) {
+        if (newTask.completed() != null) {
             existingTask.setCompleted(newTask.completed());
         }
 
         TaskEntity updatedTask = taskRepository.save(existingTask);
         return TaskMapper.toResponse(updatedTask);
+    }
+
+
+    public void deleteTask(Long id) {
+        TaskEntity taskToBeDelete = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        taskRepository.delete(taskToBeDelete);
     }
 }

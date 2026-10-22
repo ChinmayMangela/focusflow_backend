@@ -8,6 +8,7 @@ import com.example.chinmay.focusflow.service.TaskService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,8 +68,16 @@ public class TaskController {
     public ResponseEntity<TaskResponse> updateTaskPatch(
             @PathVariable Long id,
             @Valid @RequestBody UpdateTaskPatchRequest updateTaskPatchRequest
-            ) {
+    ) {
         TaskResponse updatedTask = taskService.updateTaskPatch(id, updateTaskPatchRequest);
         return ResponseEntity.ok(updatedTask);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(
+            @PathVariable Long id
+    ) {
+        taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
     }
 }
