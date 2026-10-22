@@ -2,12 +2,14 @@ package com.example.chinmay.focusflow.controller;
 
 import com.example.chinmay.focusflow.dto.CreateTaskRequest;
 import com.example.chinmay.focusflow.dto.TaskResponse;
+import com.example.chinmay.focusflow.dto.UpdateTaskPatchRequest;
 import com.example.chinmay.focusflow.dto.UpdateTaskPutRequest;
 import com.example.chinmay.focusflow.service.TaskService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -59,5 +61,14 @@ public class TaskController {
         TaskResponse updatedTask = taskService.updateTaskPut(id, updateTaskPutRequest);
         return ResponseEntity.ok(updatedTask);
 
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskResponse> updateTaskPatch(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateTaskPatchRequest updateTaskPatchRequest
+            ) {
+        TaskResponse updatedTask = taskService.updateTaskPatch(id, updateTaskPatchRequest);
+        return ResponseEntity.ok(updatedTask);
     }
 }

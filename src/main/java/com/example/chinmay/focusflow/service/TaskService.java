@@ -3,6 +3,7 @@ package com.example.chinmay.focusflow.service;
 
 import com.example.chinmay.focusflow.dto.CreateTaskRequest;
 import com.example.chinmay.focusflow.dto.TaskResponse;
+import com.example.chinmay.focusflow.dto.UpdateTaskPatchRequest;
 import com.example.chinmay.focusflow.dto.UpdateTaskPutRequest;
 import com.example.chinmay.focusflow.entity.TaskEntity;
 import com.example.chinmay.focusflow.exception.TaskNotFoundException;
@@ -57,5 +58,29 @@ public class TaskService {
         TaskEntity updatedTask = taskRepository.save(existingTask);
         return TaskMapper.toResponse(updatedTask);
 
+    }
+
+    public TaskResponse updateTaskPatch(
+            Long oldTaskId,
+            UpdateTaskPatchRequest newTask
+    ) {
+        TaskEntity existingTask = taskRepository.findById(oldTaskId)
+                .orElseThrow(() -> new TaskNotFoundException(oldTaskId));
+
+        if(newTask.title() != null) {
+            existingTask.setTitle(newTask.title());
+        }
+        if(newTask.description() != null) {
+            existingTask.setDescription(newTask.description());
+        }
+        if(newTask.priority() != null) {
+            existingTask.setPriority(newTask.priority());
+        }
+        if(newTask.completed() != null) {
+            existingTask.setCompleted(newTask.completed());
+        }
+
+        TaskEntity updatedTask = taskRepository.save(existingTask);
+        return TaskMapper.toResponse(updatedTask);
     }
 }
