@@ -5,11 +5,14 @@ import com.example.chinmay.focusflow.dto.CreateTaskRequest;
 import com.example.chinmay.focusflow.dto.TaskResponse;
 import com.example.chinmay.focusflow.dto.UpdateTaskPatchRequest;
 import com.example.chinmay.focusflow.dto.UpdateTaskPutRequest;
+import com.example.chinmay.focusflow.entity.Priority;
 import com.example.chinmay.focusflow.entity.TaskEntity;
 import com.example.chinmay.focusflow.exception.TaskNotFoundException;
 import com.example.chinmay.focusflow.mapper.TaskMapper;
 import com.example.chinmay.focusflow.repository.TaskRepository;
+import com.example.chinmay.focusflow.repository.specification.TaskSpecifications;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -40,8 +43,17 @@ public class TaskService {
         return TaskMapper.toResponse(task);
     }
 
-    public List<TaskResponse> fetchAllTasks() {
-        return taskRepository.findAll().stream().map(TaskMapper::toResponse).toList();
+    public List<TaskResponse> fetchAllTasks(
+            Priority priority,
+            Boolean completed
+    ) {
+        final Specification<TaskEntity> specification = Specification.where(
+                TaskSpecifications.hasPriority(priority)
+                        .and(TaskSpecifications.hasCompleted(completed))
+        );
+        return taskRepository.findAll(
+                specification
+        ).stream().map(TaskMapper::toResponse).toList();
     }
 
     public TaskResponse updateTaskPut(

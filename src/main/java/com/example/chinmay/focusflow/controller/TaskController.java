@@ -4,6 +4,7 @@ import com.example.chinmay.focusflow.dto.CreateTaskRequest;
 import com.example.chinmay.focusflow.dto.TaskResponse;
 import com.example.chinmay.focusflow.dto.UpdateTaskPatchRequest;
 import com.example.chinmay.focusflow.dto.UpdateTaskPutRequest;
+import com.example.chinmay.focusflow.entity.Priority;
 import com.example.chinmay.focusflow.service.TaskService;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,8 +52,14 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> fetchAllTasks() {
-        return ResponseEntity.ok(taskService.fetchAllTasks());
+    public ResponseEntity<List<TaskResponse>> fetchAllTasks(
+            @Valid @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false) Boolean completed
+            ) {
+        return ResponseEntity.ok(taskService.fetchAllTasks(
+                priority,
+                completed
+        ));
     }
 
     @PutMapping("/{id}")
